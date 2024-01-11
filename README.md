@@ -11,3 +11,9 @@
 10) User/Patient can also moniter the status of the appoinment.
 # Technology used in this project: 
 Advance JAVA concepts like Java, JSP, Servlet, HTML, CSS, Boostrap 5,and MySQL
+# Project View:
+# Home Page:
+![home1](https://github.com/Nandan185/Smart-Hospital/assets/79567845/8db79a57-557f-48aa-b1ee-a5eacd43bd8d)
+![home2](https://github.com/Nandan185/Smart-Hospital/assets/79567845/2bf95815-9734-4212-90c8-946e138db76f)
+![home3](https://github.com/Nandan185/Smart-Hospital/assets/79567845/b72ba93d-6ea2-4ae6-88a9-7c5ad83a8267)
+![home4](https://github.com/Nandan185/Smart-Hospital/assets/79567845/6907d192-eaa2-4379-91d1-2fa56476f411)
