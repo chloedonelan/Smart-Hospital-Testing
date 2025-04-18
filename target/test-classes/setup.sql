@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS hospital_db;
+CREATE DATABASE hospital_db;
+USE hospital_db;
+
 -- Create the user_details table
 CREATE TABLE user_details (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -46,3 +50,6 @@ CREATE TABLE appointment (
 CREATE INDEX idx_appointment_userid ON appointment(userId);
 CREATE INDEX idx_appointment_doctorid ON appointment(doctorId);
 CREATE INDEX idx_doctor_specialist ON doctor(specialist);
+
+INSERT INTO doctor (fullName, dateOfBirth, qualification, specialist, email, phone, password)
+VALUES ('test doctor', '1980-01-01', 'qualification', 'specialist', 'doc1@gmail.com', '1234567899', 'pass');

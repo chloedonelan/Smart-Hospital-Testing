@@ -250,7 +250,7 @@ public class DoctorDAOTest {
     public void testCountTotalAppointment() throws SQLException {
         Statement stmt = conn.createStatement();
 
-        stmt.executeUpdate("INSERT INTO user_details(fullName, email, password) " +
+        stmt.executeUpdate("INSERT INTO user_details(full_name, email, password) " +
                 "VALUES ('User 1','user1@gmail.com','pass')," +
                 "('User 2','user2@gmail.com','pass')," +
                 "('User 3','user3@gmail.com','pass')");
@@ -259,10 +259,10 @@ public class DoctorDAOTest {
                 "VALUES ('Doctor 1', '1990-01-01', 'Qual1', 'Spec1', 'doc1@gmail.com', '1234567890', 'pass1')," +
                 "('Doctor 2', '1990-02-02', 'Qual2', 'Spec2', 'doc2@gmail.com', '0987654321', 'pass2')");
 
-        stmt.executeUpdate("INSERT INTO appointment(doctorId, userId, appointmentDate, status) " +
-                "VALUES (1, 1, '2025-04-10', 'pending')," +
-                "(1, 2, '2025-04-11', 'pending')," +
-                "(2, 3, '2025-04-11', 'done')");
+        stmt.executeUpdate("INSERT INTO appointment(doctorId, userId, fullName, gender, age, appointmentDate, email, phone, diseases, address, status) " +
+                "VALUES (1, 1, 'total appt user 1', 'M', '25', '2025-04-10', 'totalapptuser1@gmail.com', '123456789', 'none', '123 address', 'pending')," +
+                "(1, 2, 'total appt user 2', 'F', '21', '2025-04-11', 'totalapptuser2@gmail.com', '123456789', 'none', '123 address', 'pending')," +
+                "(2, 3,  'total appt user 3', 'M', '40', '2025-04-11', 'totalapptuser3@gmail.com', '123456789', 'none', '123 address', 'done')");
         int total = doctorDAO.countTotalAppointment();
         assertEquals(3, total);
     }
@@ -275,7 +275,7 @@ public class DoctorDAOTest {
                 "VALUES ('doc one', '1990-01-01', 'qual1', 'spec1', 'doc1@gmail.com', '9999999999', 'pass1')," +
                 "('doc two', '1990-02-02', 'qual2', 'spec2', 'doc2@gmail.com', '111111111', 'pass2')");
 
-        stmt.executeUpdate("INSERT INTO user_details(fullName, email, password) " +
+        stmt.executeUpdate("INSERT INTO user_details(full_name, email, password) " +
                 "VALUES ('test user', 'testuser@gmail.com', 'testuserpass')");
 
         PreparedStatement userStmt = conn.prepareStatement("SELECT id FROM user_details WHERE email='testuser@gmail.com'");
@@ -283,10 +283,10 @@ public class DoctorDAOTest {
         assertTrue(userRs.next());
         int userId = userRs.getInt("id");
 
-        stmt.executeUpdate("INSERT INTO appointment(doctorId, userId, appointmentDate, status) " +
-                "VALUES (1, " + userId + ", '2025-04-10', 'pending')," +
-                "(1, " + userId + ", '2025-04-11', 'pending')," +
-                "(2, " + userId + ", '2025-04-11', 'done')");
+        stmt.executeUpdate("INSERT INTO appointment(doctorId, userId, fullName, gender, age, appointmentDate, email, phone, diseases, address, status) " +
+                "VALUES (1, " + userId + ", 'total appt by doctor id user 1', 'M', '25', '2025-04-10', 'apptbydociduser1@gmail.com', '1234567890', 'none', '123 address', 'pending')," +
+                "(1, " + userId + ", 'total appt by doctor id user 2', 'F', '49', '2025-04-11', 'apptbydociduser2@gmail.com', '1234567890', 'none', '123 address', 'pending')," +
+                "(2, " + userId + ", 'total appt by doctor id user 3', 'M', '95', '2025-04-11', 'apptbydociduser3@gmail.com', '1234567890', 'none', '123 address', 'done')");
 
         int total = doctorDAO.countTotalAppointment();
         assertEquals(3, total);
@@ -295,7 +295,7 @@ public class DoctorDAOTest {
     @Test
     public void testCountTotalUser() throws SQLException {
         Statement stmt = conn.createStatement();
-        stmt.executeUpdate("INSERT INTO user_details(fullName, email, password) " +
+        stmt.executeUpdate("INSERT INTO user_details(full_name, email, password) " +
                 "VALUES ('User A','usera@gmail.com', 'userapass')," +
                 "('User B','userb@gmail.com', 'userbpass')," +
                 "('User C','userc@gmail.com', 'usercpass')");
