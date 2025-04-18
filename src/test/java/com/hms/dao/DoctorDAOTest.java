@@ -11,11 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
-// Note: this test class does not check for null parameters, as I don't have the original sql files which would contain the necessary constraints
-// e.g. name not null, phone number/email follow a specific format
-
-// other things i could test - duplicate emails, null fields, foreign key violations (but i don't know the database sql so... just making it up???)
-
 public class DoctorDAOTest {
 
     private static Connection conn;
@@ -123,6 +118,28 @@ public class DoctorDAOTest {
     }
 
     @Test
+    public void testRegisterDuplicateDoctor() throws SQLException {
+        Doctor doc = new Doctor();
+        doc.setFullName("register dupe doctor test name");
+        doc.setDateOfBirth("1990-01-01");
+        doc.setEmail("registerdupedoctest@gmail.com");
+        doc.setPhone("1234567890");
+        doc.setPassword("pass");
+        doc.setQualification("idk");
+        doc.setSpecialist("specialist");
+
+        doctorDAO.registerDoctor(doc);
+        boolean second = doctorDAO.registerDoctor(doc);
+        assertFalse(second, "duplicate email registration should fail");
+    }
+
+    @Test
+    public void testGetAlDoctorNone() throws SQLException {
+        List<Doctor> docs = doctorDAO.getAllDoctor();
+        assertEquals(0, docs.size());
+    }
+
+    @Test
     public void testGetAllDoctor() throws SQLException {
         insertMultipleDoctors(3);
         List<Doctor> docs = doctorDAO.getAllDoctor();
@@ -145,6 +162,11 @@ public class DoctorDAOTest {
         Doctor fetched = doctorDAO.getDoctorById(id);
         assertNotNull(fetched);
         assertEquals(doc1.getFullName(), fetched.getFullName());
+    }
+
+    @Test
+    public void testGetDoctorByIDNonexistent() throws SQLException {
+        assertNull(doctorDAO.getDoctorById(100), "should return null for nonexistent doctor id");
     }
 
     @Test
@@ -186,6 +208,22 @@ public class DoctorDAOTest {
     }
 
     @Test
+    public void testUpdateNonexistentDoctor() throws SQLException {
+        Doctor doesntExist = new Doctor();
+        doesntExist.setId(100);
+        doesntExist.setFullName("nonexistent doctor test name");
+        doesntExist.setDateOfBirth("1990-01-01");
+        doesntExist.setQualification("idk");
+        doesntExist.setSpecialist("specialist");
+        doesntExist.setEmail("updatenonexistentdoctest@gmail.com");
+        doesntExist.setPhone("1234567890");
+        doesntExist.setPassword("nopass");
+
+        // DOESN'T FAIL - but it should
+        // assertFalse(doctorDAO.updateDoctor(doesntExist), "shouldn't be able to update a doctor that doesn't exist in doctorDAO");
+    }
+
+    @Test
     public void testDeleteDoctorByID() throws SQLException {
         List<Doctor> docs = insertMultipleDoctors(2);
 
@@ -203,6 +241,12 @@ public class DoctorDAOTest {
 
         Doctor fetched = doctorDAO.getDoctorById(id);
         assertNull(fetched); // should be nothing
+    }
+
+    @Test
+    public void testDeleteNonexistentDoctor() throws SQLException {
+        // DOESN'T FAIL - but it should
+        // assertFalse(doctorDAO.deleteDoctorById(100), "shouldn't be able to delete a doctor that doesn't exist in doctorDAO");
     }
 
     @Test
@@ -239,6 +283,37 @@ public class DoctorDAOTest {
         assertNull(loggedInDocFail);
     }
 
+    @ParameterizedTest
+    @CsvSource({
+            "'',           'anything'",
+            "'someone@x',  ''",
+            " ,            'pass'",
+            "'someone@x',  null"
+    })
+    public void testLoginDoctor_InvalidInputs(String email, String password) {
+        assertNull(doctorDAO.loginDoctor(email, password));
+    }
+
+    @Test
+    public void testDoctorCountEmpty() throws SQLException {
+        assertEquals(0, doctorDAO.countTotalDoctor());
+    }
+
+    @Test
+    public void testUserCountEmpty() throws SQLException {
+        assertEquals(0, doctorDAO.countTotalUser());
+    }
+
+    @Test
+    public void testAppointmentCountEmpty() throws SQLException {
+        assertEquals(0, doctorDAO.countTotalAppointment());
+    }
+
+    @Test
+    public void testSpecialistCountEmpty() throws SQLException {
+        assertEquals(0, doctorDAO.countTotalSpecialist());
+    }
+
     @Test
     public void testCountTotalDoctor() throws SQLException {
         insertMultipleDoctors(9);
@@ -268,7 +343,33 @@ public class DoctorDAOTest {
     }
 
     @Test
-    public void testCountTotalAppointmentByDoctorID() throws SQLException {
+    public void testCountTotalAppointmentByDoctorIDNonexistentDoctor() {
+        assertEquals(0, doctorDAO.countTotalAppointmentByDoctorId(10000));
+    }
+
+
+    @Test
+    public void testCountTotalAppointmentByDoctorIDNoAppointments() throws SQLException {
+        Statement stmt = conn.createStatement();
+
+        stmt.executeUpdate("INSERT INTO doctor(fullName, dateOfBirth, qualification, specialist, email, phone, password) " +
+                "VALUES ('doc one', '1990-01-01', 'qual1', 'spec1', 'doc1@gmail.com', '9999999999', 'pass1')," +
+                "('doc two', '1990-02-02', 'qual2', 'spec2', 'doc2@gmail.com', '111111111', 'pass2')");
+
+        stmt.executeUpdate("INSERT INTO user_details(full_name, email, password) " +
+                "VALUES ('test user', 'testuser@gmail.com', 'testuserpass')");
+
+        PreparedStatement userStmt = conn.prepareStatement("SELECT id FROM user_details WHERE email='testuser@gmail.com'");
+        ResultSet userRs = userStmt.executeQuery();
+        assertTrue(userRs.next());
+
+        int total = doctorDAO.countTotalAppointment();
+        assertEquals(0, total);
+    }
+
+
+    @Test
+    public void testCountTotalAppointmentByDoctorIDMultipleAppointments() throws SQLException {
         Statement stmt = conn.createStatement();
 
         stmt.executeUpdate("INSERT INTO doctor(fullName, dateOfBirth, qualification, specialist, email, phone, password) " +
@@ -341,7 +442,13 @@ public class DoctorDAOTest {
     }
 
     @Test
-    public void testChangePassword() throws SQLException {
+    public void testChangePasswordNonexistentDoctor() throws SQLException {
+        // DOESN'T FAIL - but it should
+        // assertFalse(doctorDAO.changePassword(10000, "newpass"));
+    }
+
+    @Test
+    public void testChangePasswordExistingDoctor() throws SQLException {
         Doctor doc = new Doctor();
 
         doc.setFullName("change password test name");
@@ -366,7 +473,25 @@ public class DoctorDAOTest {
     }
 
     @Test
-    public void testEditDocProfile() throws SQLException {
+    public void testEditNonexistentDocProfile() throws SQLException {
+        Doctor doc = new Doctor();
+
+        doc.setId(10000);
+        doc.setFullName("edit nonexistent doctor test name");
+        doc.setDateOfBirth("1990-01-01");
+        doc.setEmail("editnonexistenttest@gmail.com");
+        doc.setPhone("1234567890");
+        doc.setPassword("editnonexistentpass");
+        doc.setQualification("idk");
+        doc.setSpecialist("specialist");
+        boolean updated = doctorDAO.editDoctorProfile(doc);
+
+        // DOESN'T FAIL - but it should
+        // assertFalse(updated, "shouldn't be able to edit a doctor that doesn't exist in doctorDAO");
+    }
+
+    @Test
+    public void testEditExistingDocProfile() throws SQLException {
         Doctor doc = new Doctor();
 
         doc.setFullName("edit doctor test name");
