@@ -58,7 +58,7 @@ public class DoctorPagesSeleniumTest {
 
         int userId;
         String userInsert =
-                "INSERT INTO user_details(fullName, email, password) VALUES (?,?,?)";
+                "INSERT INTO user_details(full_name, email, password) VALUES (?,?,?)";
         try (PreparedStatement ps = conn.prepareStatement(
                 userInsert, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, "selenium test user");
