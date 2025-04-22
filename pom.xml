@@ -8,10 +8,9 @@
 	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.10.2</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -42,6 +41,12 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
+			<version>5.17.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
 			<version>5.12.0</version>
 			<scope>test</scope>
 		</dependency>
@@ -68,6 +73,7 @@
 				<configuration>
 					<includes>
 						<include>**/com/hms/entity/**/*Test.java</include>
+						<include>**/com/hms/admin/servlet/**/*Test.java</include>
 					</includes>
 				</configuration>
 			</plugin>
@@ -81,7 +87,6 @@
 							<goal>prepare-agent</goal>
 						</goals>
 					</execution>
-					<!-- attached to Maven test phase -->
 					<execution>
 						<id>report</id>
 						<phase>test</phase>
