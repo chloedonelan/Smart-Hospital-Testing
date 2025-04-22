@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -48,7 +49,9 @@ public class AdminLoginServletTest {
       verify(response).sendRedirect("admin/index.jsp");
       verify(session, never()).setAttribute(eq("errorMsg"), eq("Invalid Username or Password."));
       verify(response, never()).sendRedirect("admin_login.jsp");
-    } catch (ServletException | IOException ignored) {}
+    } catch (ServletException | IOException e) {
+      fail();
+    }
   }
   
   // Unsuccessful login credential provided (incorrect email)
@@ -65,7 +68,9 @@ public class AdminLoginServletTest {
       verify(response).sendRedirect("admin_login.jsp");
       verify(session, never()).setAttribute(eq("adminObj"), any(User.class));
       verify(response, never()).sendRedirect("admin/index.jsp");
-    } catch (ServletException | IOException ignored) {}
+    } catch (ServletException | IOException e) {
+      fail();
+    }
   }
   
   // Unsuccessful login credential provided (incorrect password)
@@ -82,7 +87,9 @@ public class AdminLoginServletTest {
       verify(response).sendRedirect("admin_login.jsp");
       verify(session, never()).setAttribute(eq("adminObj"), any(User.class));
       verify(response, never()).sendRedirect("admin/index.jsp");
-    } catch (ServletException | IOException ignored) {}
+    } catch (ServletException | IOException e) {
+      fail();
+    }
   }
   
   // Unsuccessful login credential provided (incorrect email & password)
@@ -99,7 +106,9 @@ public class AdminLoginServletTest {
       verify(response).sendRedirect("admin_login.jsp");
       verify(session, never()).setAttribute(eq("adminObj"), any(User.class));
       verify(response, never()).sendRedirect("admin/index.jsp");
-    } catch (ServletException | IOException ignored) {}
+    } catch (ServletException | IOException e) {
+      fail();
+    }
   }
   
   // Unsuccessful login (credentials are empty)
@@ -116,7 +125,9 @@ public class AdminLoginServletTest {
       verify(response).sendRedirect("admin_login.jsp");
       verify(session, never()).setAttribute(eq("adminObj"), any(User.class));
       verify(response, never()).sendRedirect("admin/index.jsp");
-    } catch (ServletException | IOException ignored) {}
+    } catch (ServletException | IOException e) {
+      fail();
+    }
   }
   
   // Unsuccessful login (credentials are null)
@@ -133,6 +144,8 @@ public class AdminLoginServletTest {
       verify(response).sendRedirect("admin_login.jsp");
       verify(session, never()).setAttribute(eq("adminObj"), any(User.class));
       verify(response, never()).sendRedirect("admin/index.jsp");
-    } catch (ServletException | IOException ignored) {}
+    } catch (ServletException | IOException e) {
+      fail();
+    }
   }
 }
