@@ -189,7 +189,7 @@ public class IndexTest {
       assertTrue(header.getText().contains("Add Specialist"));
       
       WebElement body = modal.findElement(By.className("modal-body"));
-      body.findElement(By.name("specialistName")).sendKeys("Dr. John Doe");
+      body.findElement(By.name("specialistName")).sendKeys("Dr. Sully Nium");
       body.findElement(By.tagName("button")).submit();
   
       wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("modal")));
