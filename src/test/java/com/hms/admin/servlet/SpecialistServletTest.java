@@ -87,6 +87,23 @@ public class SpecialistServletTest {
     }
   }
   
+  // Unsuccessful addition of specialist to the database (null parameters)
+  @Test
+  public void testFailureNullParameters() {
+    when(request.getSession()).thenReturn(session);
+    when(request.getParameter("specialistName")).thenReturn(null);
+    
+    try {
+      servlet.doPost(request, response);
+      
+      verify(session).setAttribute(eq("errorMsg"), eq("Something went wrong on server"));
+      verify(response).sendRedirect("admin/index.jsp");
+      verify(session, never()).setAttribute(eq("successMsg"), eq("Specialist added Successfully."));
+    } catch (ServletException | IOException e) {
+      fail();
+    }
+  }
+  
   // Unsuccessful addition of specialist to the database (already exists)
   // Affected by bug in addSpecialist() (this is why it's commented out)
 //  @Test
@@ -110,20 +127,21 @@ public class SpecialistServletTest {
 //    }
 //  }
   
-  // Unsuccessful addition of specialist to the database (null parameters)
-  @Test
-  public void testFailureNullParameters() {
-    when(request.getSession()).thenReturn(session);
-    when(request.getParameter("specialistName")).thenReturn(null);
-    
-    try {
-      servlet.doPost(request, response);
-      
-      verify(session).setAttribute(eq("errorMsg"), eq("Something went wrong on server"));
-      verify(response).sendRedirect("admin/index.jsp");
-      verify(session, never()).setAttribute(eq("successMsg"), eq("Specialist added Successfully."));
-    } catch (ServletException | IOException e) {
-      fail();
-    }
-  }
+  // Unsuccessful addition of specialist to the database (empty parameters)
+  // Affected by bug in addSpecialist() (this is why it's commented out)
+//  @Test
+//  public void testFailureEmptyParameters() {
+//    when(request.getSession()).thenReturn(session);
+//    when(request.getParameter("specialistName")).thenReturn("");
+//
+//    try {
+//      servlet.doPost(request, response);
+//
+//      verify(session).setAttribute(eq("errorMsg"), eq("Something went wrong on server"));
+//      verify(response).sendRedirect("admin/index.jsp");
+//      verify(session, never()).setAttribute(eq("successMsg"), eq("Specialist added Successfully."));
+//    } catch (ServletException | IOException e) {
+//      fail();
+//    }
+//  }
 }
