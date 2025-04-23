@@ -1,5 +1,7 @@
 package com.hms.admin.servlet;
 
+import com.hms.dao.DoctorDAO;
+import com.hms.entity.Doctor;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -8,6 +10,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedConstruction;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
@@ -151,67 +154,69 @@ public class UpdateDoctorServletTest {
   }
   
   // Unsuccessful edit to doctor in the database (does not exist)
-  // Affected by bug in DAO method (that's why it's commented out)
-//  @Test
-//  public void testFailureDoctorDoesNotExist() {
-//    when(request.getSession()).thenReturn(session);
-//    when(request.getParameter("fullName")).thenReturn("Jane Doe");
-//    when(request.getParameter("dateOfBirth")).thenReturn("12-3-1966");
-//    when(request.getParameter("qualification")).thenReturn("MD/PhD");
-//    when(request.getParameter("specialist")).thenReturn("Neurosurgery");
-//    when(request.getParameter("email")).thenReturn("jane.doe@jh.edu");
-//    when(request.getParameter("phone")).thenReturn("234-555-6792");
-//    when(request.getParameter("password")).thenReturn("J4n3D03!");
-//    when(request.getParameter("id")).thenReturn("156");
-//
-//    try {
-//      servlet.doPost(request, response);
-//
-//      verify(session).setAttribute(eq("errorMsg"), eq("Something went wrong on server!"));
-//      verify(response).sendRedirect("admin/view_doctor.jsp");
-//      verify(session, never()).setAttribute(eq("successMsg"), eq("Doctor update Successfully"));
-//    } catch (ServletException | IOException e) {
-//      fail();
-//    }
-//  }
+  @Test
+  public void testFailureDoctorDoesNotExist() {
+    when(request.getSession()).thenReturn(session);
+    when(request.getParameter("fullName")).thenReturn("Jane Doe");
+    when(request.getParameter("dateOfBirth")).thenReturn("12-3-1966");
+    when(request.getParameter("qualification")).thenReturn("MD/PhD");
+    when(request.getParameter("specialist")).thenReturn("Neurosurgery");
+    when(request.getParameter("email")).thenReturn("jane.doe@jh.edu");
+    when(request.getParameter("phone")).thenReturn("234-555-6792");
+    when(request.getParameter("password")).thenReturn("J4n3D03!");
+    when(request.getParameter("id")).thenReturn("156");
+    
+    try (MockedConstruction<DoctorDAO> daoMocks = mockConstruction(DoctorDAO.class, (mockDao, ctx) -> {
+      when(mockDao.updateDoctor(any(Doctor.class))).thenReturn(false);
+    })){
+      servlet.doPost(request, response);
+
+      verify(session).setAttribute(eq("errorMsg"), eq("Something went wrong on server!"));
+      verify(response).sendRedirect("admin/view_doctor.jsp");
+      verify(session, never()).setAttribute(eq("successMsg"), eq("Doctor update Successfully"));
+    } catch (ServletException | IOException e) {
+      fail();
+    }
+  }
   
   // Unsuccessful edit to doctor in the database (empty values)
-  // Affected by bug in DAO method (that's why it's commented out)
-//  @Test
-//  public void testFailureEmptyValues() {
-//    when(request.getSession()).thenReturn(session);
-//    when(request.getParameter("fullName")).thenReturn("John Doe");
-//    when(request.getParameter("dateOfBirth")).thenReturn("2-22-1969");
-//    when(request.getParameter("qualification")).thenReturn("MD");
-//    when(request.getParameter("specialist")).thenReturn("General Surgery");
-//    when(request.getParameter("email")).thenReturn("john.doe@jh.edu");
-//    when(request.getParameter("phone")).thenReturn("234-555-6790");
-//    when(request.getParameter("password")).thenReturn("J0hnD03!");
-//
-//    try {
-//      addServlet.doPost(request, response);
-//    } catch (ServletException | IOException e) {
-//      fail();
-//    }
-//
-//    when(request.getSession()).thenReturn(session);
-//    when(request.getParameter("fullName")).thenReturn("");
-//    when(request.getParameter("dateOfBirth")).thenReturn("");
-//    when(request.getParameter("qualification")).thenReturn("");
-//    when(request.getParameter("specialist")).thenReturn("");
-//    when(request.getParameter("email")).thenReturn("");
-//    when(request.getParameter("phone")).thenReturn("");
-//    when(request.getParameter("password")).thenReturn("");
-//    when(request.getParameter("id")).thenReturn("1");
-//
-//    try {
-//      servlet.doPost(request, response);
-//
-//      verify(session).setAttribute(eq("errorMsg"), eq("Something went wrong on server!"));
-//      verify(response).sendRedirect("admin/view_doctor.jsp");
-//      verify(session, never()).setAttribute(eq("successMsg"), eq("Doctor update Successfully"));
-//    } catch (ServletException | IOException e) {
-//      fail();
-//    }
-//  }
+  @Test
+  public void testFailureEmptyValues() {
+    when(request.getSession()).thenReturn(session);
+    when(request.getParameter("fullName")).thenReturn("John Doe");
+    when(request.getParameter("dateOfBirth")).thenReturn("2-22-1969");
+    when(request.getParameter("qualification")).thenReturn("MD");
+    when(request.getParameter("specialist")).thenReturn("General Surgery");
+    when(request.getParameter("email")).thenReturn("john.doe@jh.edu");
+    when(request.getParameter("phone")).thenReturn("234-555-6790");
+    when(request.getParameter("password")).thenReturn("J0hnD03!");
+
+    try {
+      addServlet.doPost(request, response);
+    } catch (ServletException | IOException e) {
+      fail();
+    }
+
+    when(request.getSession()).thenReturn(session);
+    when(request.getParameter("fullName")).thenReturn("");
+    when(request.getParameter("dateOfBirth")).thenReturn("");
+    when(request.getParameter("qualification")).thenReturn("");
+    when(request.getParameter("specialist")).thenReturn("");
+    when(request.getParameter("email")).thenReturn("");
+    when(request.getParameter("phone")).thenReturn("");
+    when(request.getParameter("password")).thenReturn("");
+    when(request.getParameter("id")).thenReturn("1");
+  
+    try (MockedConstruction<DoctorDAO> daoMocks = mockConstruction(DoctorDAO.class, (mockDao, ctx) -> {
+      when(mockDao.updateDoctor(any(Doctor.class))).thenReturn(false);
+    })){
+      servlet.doPost(request, response);
+
+      verify(session).setAttribute(eq("errorMsg"), eq("Something went wrong on server!"));
+      verify(response).sendRedirect("admin/view_doctor.jsp");
+      verify(session, never()).setAttribute(eq("successMsg"), eq("Doctor update Successfully"));
+    } catch (ServletException | IOException e) {
+      fail();
+    }
+  }
 }
