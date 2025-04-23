@@ -1,0 +1,27 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Doctor-Patient-Portal Maven Webapp,com.hms.dao,DoctorDAO,455,142,18,0,151,44,20,4,11,4
+Doctor-Patient-Portal Maven Webapp,com.hms.dao,AppointmentDAO,493,0,8,0,132,0,11,0,7,0
+Doctor-Patient-Portal Maven Webapp,com.hms.dao,SpecialistDAO,44,30,2,0,14,13,2,2,1,2
+Doctor-Patient-Portal Maven Webapp,com.hms.dao,UserDAO,155,0,4,0,54,0,7,0,5,0
+Doctor-Patient-Portal Maven Webapp,com.hms.doctor.servlet,UpdateStatus,51,3,2,0,15,1,2,1,1,1
+Doctor-Patient-Portal Maven Webapp,com.hms.doctor.servlet,DoctorChangePassword,55,3,4,0,14,1,3,1,1,1
+Doctor-Patient-Portal Maven Webapp,com.hms.doctor.servlet,DoctorLogoutServlet,14,3,0,0,5,1,1,1,1,1
+Doctor-Patient-Portal Maven Webapp,com.hms.doctor.servlet,DoctorLoginServlet,39,3,2,0,11,1,2,1,1,1
+Doctor-Patient-Portal Maven Webapp,com.hms.doctor.servlet,DoctorEditProfileServlet,84,3,2,0,23,1,2,1,1,1
+Doctor-Patient-Portal Maven Webapp,com.hms.db,DBConnection,6,11,0,0,3,4,1,1,1,1
+Doctor-Patient-Portal Maven Webapp,com.hms.entity,Doctor,20,90,0,0,10,35,5,14,5,14
+Doctor-Patient-Portal Maven Webapp,com.hms.entity,Specialist,26,0,0,0,12,0,6,0,6,0
+Doctor-Patient-Portal Maven Webapp,com.hms.entity,Appointment,126,36,0,0,52,13,26,1,26,1
+Doctor-Patient-Portal Maven Webapp,com.hms.entity,User,54,31,0,0,11,15,6,6,6,6
+Doctor-Patient-Portal Maven Webapp,com.hms.user.servlet,UserLoginServlet,0,42,0,2,0,12,0,3,0,2
+Doctor-Patient-Portal Maven Webapp,com.hms.user.servlet,AppointmentServlet,0,91,0,2,0,21,0,3,0,2
+Doctor-Patient-Portal Maven Webapp,com.hms.user.servlet,UserLogoutServlet,0,17,0,0,0,6,0,2,0,2
+Doctor-Patient-Portal Maven Webapp,com.hms.user.servlet,UserRegisterServlet,0,57,0,2,0,17,0,3,0,2
+Doctor-Patient-Portal Maven Webapp,com.hms.user.servlet,MyNewServlet,0,17,0,0,0,6,0,3,0,3
+Doctor-Patient-Portal Maven Webapp,com.hms.user.servlet,ChangePasswordServlet,0,58,0,4,0,15,0,4,0,2
+Doctor-Patient-Portal Maven Webapp,com.hms.admin.servlet,DeleteDoctorServlet,7,32,1,1,2,9,1,2,0,2
+Doctor-Patient-Portal Maven Webapp,com.hms.admin.servlet,SpecialistServlet,0,38,0,2,0,11,0,3,0,2
+Doctor-Patient-Portal Maven Webapp,com.hms.admin.servlet,AdminLogoutServlet,0,17,0,0,0,6,0,2,0,2
+Doctor-Patient-Portal Maven Webapp,com.hms.admin.servlet,AdminLoginServlet,3,41,0,4,2,11,0,4,0,2
+Doctor-Patient-Portal Maven Webapp,com.hms.admin.servlet,UpdateDoctorServlet,3,80,0,2,2,20,0,3,0,2
+Doctor-Patient-Portal Maven Webapp,com.hms.admin.servlet,DoctorServlet,3,74,0,2,2,19,0,3,0,2
