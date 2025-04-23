@@ -11,6 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
+// Note: this test class does not check for null parameters, as I don't have the original sql files which would contain the necessary constraints
+// e.g. name not null, phone number/email follow a specific format
+
+// other things i could test - duplicate emails, null fields, foreign key violations (but i don't know the database sql so... just making it up???)
+
 public class DoctorDAOTest {
 
     private static Connection conn;
@@ -219,8 +224,8 @@ public class DoctorDAOTest {
         doesntExist.setPhone("1234567890");
         doesntExist.setPassword("nopass");
 
-        // DOESN'T FAIL - but it should
-        // assertFalse(doctorDAO.updateDoctor(doesntExist), "shouldn't be able to update a doctor that doesn't exist in doctorDAO");
+         // fault - shouldn't be able to update a doctor that doesn't exist in doctorDAO
+        assertFalse(doctorDAO.updateDoctor(doesntExist), "shouldn't be able to update a doctor that doesn't exist in doctorDAO");
     }
 
     @Test
@@ -245,8 +250,8 @@ public class DoctorDAOTest {
 
     @Test
     public void testDeleteNonexistentDoctor() throws SQLException {
-        // DOESN'T FAIL - but it should
-        // assertFalse(doctorDAO.deleteDoctorById(100), "shouldn't be able to delete a doctor that doesn't exist in doctorDAO");
+        // fault - shouldn't be able to delete a doctor that doesn't exist in doctorDAO
+        assertFalse(doctorDAO.deleteDoctorById(100), "shouldn't be able to delete a doctor that doesn't exist in doctorDAO");
     }
 
     @Test
@@ -443,8 +448,8 @@ public class DoctorDAOTest {
 
     @Test
     public void testChangePasswordNonexistentDoctor() throws SQLException {
-        // DOESN'T FAIL - but it should
-        // assertFalse(doctorDAO.changePassword(10000, "newpass"));
+        // fault - shouldn't be able to change password for a doctor that doesn't exist in doctorDAO
+        assertFalse(doctorDAO.changePassword(10000, "newpass"));
     }
 
     @Test
@@ -486,8 +491,8 @@ public class DoctorDAOTest {
         doc.setSpecialist("specialist");
         boolean updated = doctorDAO.editDoctorProfile(doc);
 
-        // DOESN'T FAIL - but it should
-        // assertFalse(updated, "shouldn't be able to edit a doctor that doesn't exist in doctorDAO");
+        // fault - shouldn't be able to edit a doctor that doesn't exist in doctorDAO
+        assertFalse(updated, "shouldn't be able to edit a doctor that doesn't exist in doctorDAO");
     }
 
     @Test
