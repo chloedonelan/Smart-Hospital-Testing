@@ -1,5 +1,6 @@
 package com.hms.admin.servlet;
 
+import com.hms.dao.SpecialistDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedConstruction;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
@@ -105,43 +107,50 @@ public class SpecialistServletTest {
   }
   
   // Unsuccessful addition of specialist to the database (already exists)
-  // Affected by bug in addSpecialist() (this is why it's commented out)
-//  @Test
-//  public void testFailureSpecialistAlreadyExistsInDatabase() {
-//    when(request.getSession()).thenReturn(session);
-//    when(request.getParameter("specialistName")).thenReturn("John Doe");
-//
-//    try {
-//      servlet.doPost(request, response); // Initial addition
-//
-//      reset(session, response);
-//      when(request.getSession()).thenReturn(session);
-//
-//      servlet.doPost(request, response); // Second addition attempt
-//
-//      verify(session).setAttribute(eq("errorMsg"), eq("Something went wrong on server"));
-//      verify(response).sendRedirect("admin/index.jsp");
-//      verify(session, never()).setAttribute(eq("successMsg"), eq("Specialist added Successfully."));
-//    } catch (ServletException | IOException e) {
-//      fail();
-//    }
-//  }
+  @Test
+  public void testFailureSpecialistAlreadyExistsInDatabase() {
+    when(request.getSession()).thenReturn(session);
+    when(request.getParameter("specialistName")).thenReturn("John Doe");
+
+    try {
+      servlet.doPost(request, response); // Initial addition
+    } catch (Exception e) {
+      fail();
+    }
+    
+    try (MockedConstruction<SpecialistDAO> daoMocks = mockConstruction(SpecialistDAO.class, (mockDao, ctx) -> {
+      when(mockDao.addSpecialist(any(String.class))).thenReturn(false);
+    })){
+      reset(session, response);
+      when(request.getSession()).thenReturn(session);
+
+      servlet.doPost(request, response); // Second addition attempt
+
+      verify(session).setAttribute(eq("errorMsg"), eq("Something went wrong on server"));
+      verify(response).sendRedirect("admin/index.jsp");
+      verify(session, never()).setAttribute(eq("successMsg"), eq("Specialist added Successfully."));
+    } catch (ServletException | IOException e) {
+      fail();
+    }
+  }
   
   // Unsuccessful addition of specialist to the database (empty parameters)
   // Affected by bug in addSpecialist() (this is why it's commented out)
-//  @Test
-//  public void testFailureEmptyParameters() {
-//    when(request.getSession()).thenReturn(session);
-//    when(request.getParameter("specialistName")).thenReturn("");
-//
-//    try {
-//      servlet.doPost(request, response);
-//
-//      verify(session).setAttribute(eq("errorMsg"), eq("Something went wrong on server"));
-//      verify(response).sendRedirect("admin/index.jsp");
-//      verify(session, never()).setAttribute(eq("successMsg"), eq("Specialist added Successfully."));
-//    } catch (ServletException | IOException e) {
-//      fail();
-//    }
-//  }
+  @Test
+  public void testFailureEmptyParameters() {
+    when(request.getSession()).thenReturn(session);
+    when(request.getParameter("specialistName")).thenReturn("");
+  
+    try (MockedConstruction<SpecialistDAO> daoMocks = mockConstruction(SpecialistDAO.class, (mockDao, ctx) -> {
+      when(mockDao.addSpecialist(any(String.class))).thenReturn(false);
+    })){
+      servlet.doPost(request, response);
+
+      verify(session).setAttribute(eq("errorMsg"), eq("Something went wrong on server"));
+      verify(response).sendRedirect("admin/index.jsp");
+      verify(session, never()).setAttribute(eq("successMsg"), eq("Specialist added Successfully."));
+    } catch (ServletException | IOException e) {
+      fail();
+    }
+  }
 }
