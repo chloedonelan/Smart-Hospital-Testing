@@ -1,5 +1,6 @@
 package com.hms.admin.servlet;
 
+import com.hms.dao.DoctorDAO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedConstruction;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.sql.Connection;
@@ -96,20 +98,21 @@ public class DeleteDoctorServletTest {
   }
   
   // Delete a doctor that does not exist
-  // Affected by a bug in deleteDoctorById, so it is commented out
-//  @Test
-//  public void testFailure() {
-//    when(request.getSession()).thenReturn(session);
-//    when(request.getParameter("id")).thenReturn("100");
-//
-//    try {
-//      servlet.doGet(request, response);
-//
-//      verify(session).setAttribute(eq("errorMsg"), eq("Something went wrong on server!"));
-//      verify(response).sendRedirect("admin/view_doctor.jsp");
-//      verify(session, never()).setAttribute(eq("successMsg"), eq("Doctor Deleted Successfully."));
-//    } catch (Exception e) {
-//      fail();
-//    }
-//  }
+  @Test
+  public void testFailure() {
+    when(request.getSession()).thenReturn(session);
+    when(request.getParameter("id")).thenReturn("100");
+  
+    try (MockedConstruction<DoctorDAO> daoMocks = mockConstruction(DoctorDAO.class, (mockDao, ctx) -> {
+      when(mockDao.deleteDoctorById(anyInt())).thenReturn(false);
+    })){
+      servlet.doGet(request, response);
+
+      verify(session).setAttribute(eq("errorMsg"), eq("Something went wrong on server!"));
+      verify(response).sendRedirect("admin/view_doctor.jsp");
+      verify(session, never()).setAttribute(eq("successMsg"), eq("Doctor Deleted Successfully."));
+    } catch (Exception e) {
+      fail();
+    }
+  }
 }
