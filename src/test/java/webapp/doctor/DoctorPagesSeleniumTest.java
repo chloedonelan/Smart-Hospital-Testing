@@ -1,16 +1,20 @@
-package com.hms.web;
+package webapp.doctor;
 
-import com.hms.dao.DoctorDAO;
 import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.time.Duration;
-import java.util.*;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DoctorPagesSeleniumTest {
     private WebDriver driver;
