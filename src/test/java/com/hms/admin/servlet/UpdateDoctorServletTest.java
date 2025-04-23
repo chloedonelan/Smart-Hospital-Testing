@@ -219,4 +219,20 @@ public class UpdateDoctorServletTest {
       fail();
     }
   }
+  
+  // getParameter() throws exception
+  @Test
+  public void testExceptionHandling() {
+    when(request.getParameter("fullName")).thenThrow(new RuntimeException("Session error"));
+    
+    try {
+      servlet.doPost(request, response);
+  
+      verify(session, never()).setAttribute(eq("errorMsg"), eq("Something went wrong on server!"));
+      verify(response, never()).sendRedirect("admin/view_doctor.jsp");
+      verify(session, never()).setAttribute(eq("successMsg"), eq("Doctor update Successfully"));
+    } catch (ServletException | IOException e) {
+      fail();
+    }
+  }
 }

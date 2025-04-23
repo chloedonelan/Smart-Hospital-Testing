@@ -148,4 +148,21 @@ public class AdminLoginServletTest {
       fail();
     }
   }
+  
+  // getParameter() throws exception
+  @Test
+  public void testExceptionHandling() {
+    when(request.getParameter("email")).thenThrow(new RuntimeException("Session error"));
+  
+    try {
+      servlet.doPost(request, response);
+    
+      verify(session, never()).setAttribute(eq("errorMsg"), eq("Invalid Username or Password."));
+      verify(response, never()).sendRedirect("admin_login.jsp");
+      verify(session, never()).setAttribute(eq("adminObj"), any(User.class));
+      verify(response, never()).sendRedirect("admin/index.jsp");
+    } catch (ServletException | IOException e) {
+      fail();
+    }
+  }
 }
