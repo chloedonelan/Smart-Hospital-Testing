@@ -41,14 +41,14 @@ public class IndexTest {
     driver.quit();
   }
   
+  // Verify that page title is correct
+  @Test
+  public void testPageTitle() {
+    assertEquals("Admin page", driver.getTitle());
+  }
+  
   @Nested
   public class NavigationBarTests {
-    // Verify that page title is correct
-    @Test
-    public void testPageTitle() {
-      assertEquals("Admin page", driver.getTitle());
-    }
-  
     // Verify that navigation bar is displayed
     @Test
     public void testNavigationBarDisplay() {
@@ -189,7 +189,7 @@ public class IndexTest {
       assertTrue(header.getText().contains("Add Specialist"));
       
       WebElement body = modal.findElement(By.className("modal-body"));
-      body.findElement(By.name("specialistName")).sendKeys("Dr. Sully Nium");
+      body.findElement(By.name("specialistName")).sendKeys("Chief of Surgery");
       body.findElement(By.tagName("button")).submit();
   
       wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("modal")));
