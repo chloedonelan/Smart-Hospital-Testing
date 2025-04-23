@@ -1,13 +1,14 @@
 package com.hms.dao;
 
 import com.hms.entity.User;
-
-import java.nio.file.*;
-import java.sql.*;
-import java.util.*;
 import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
 import org.mockito.Mockito;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserDAOTest {
 
@@ -17,8 +18,8 @@ public class UserDAOTest {
     @BeforeAll
     public static void setupDB() throws Exception {
         conn = DriverManager.getConnection(
-                "jdbc:mysql://127.0.0.1:3306/hospital?allowMultiQueries=true",
-                "root", "abcd1234"
+                "jdbc:mysql://127.0.0.1:3306/hospital_db?allowMultiQueries=true",
+                "root", "rootuser"
         );
 
         String sql = new String(Files.readAllBytes(Paths.get("src/test/resources/setup.sql")));
@@ -26,8 +27,8 @@ public class UserDAOTest {
         stmt.execute(sql);
 
         conn = DriverManager.getConnection(
-                "jdbc:mysql://127.0.0.1:3306/hospital",
-                "root", "abcd1234"
+                "jdbc:mysql://127.0.0.1:3306/hospital_db",
+                "root", "rootuser"
         );
     }
 

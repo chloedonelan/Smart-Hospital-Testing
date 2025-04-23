@@ -13,7 +13,7 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class ChangePasswordTest {
 
-    private final String BASE_URL = "http://localhost:8080/SmartHospital";
+    private final String BASE_URL = "http://localhost:8080/Doctor_Patient_Portal_war";
 
     @BeforeAll
     public static void setUpAll() {
