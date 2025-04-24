@@ -225,7 +225,7 @@ public class DoctorDAOTest {
         doesntExist.setPassword("nopass");
 
          // fault - shouldn't be able to update a doctor that doesn't exist in doctorDAO
-        assertFalse(doctorDAO.updateDoctor(doesntExist), "shouldn't be able to update a doctor that doesn't exist in doctorDAO");
+         assertFalse(doctorDAO.updateDoctor(doesntExist), "shouldn't be able to update a doctor that doesn't exist in doctorDAO");
     }
 
     @Test
@@ -251,7 +251,7 @@ public class DoctorDAOTest {
     @Test
     public void testDeleteNonexistentDoctor() throws SQLException {
         // fault - shouldn't be able to delete a doctor that doesn't exist in doctorDAO
-        assertFalse(doctorDAO.deleteDoctorById(100), "shouldn't be able to delete a doctor that doesn't exist in doctorDAO");
+         assertFalse(doctorDAO.deleteDoctorById(100), "shouldn't be able to delete a doctor that doesn't exist in doctorDAO");
     }
 
     @Test
@@ -449,7 +449,7 @@ public class DoctorDAOTest {
     @Test
     public void testChangePasswordNonexistentDoctor() throws SQLException {
         // fault - shouldn't be able to change password for a doctor that doesn't exist in doctorDAO
-        assertFalse(doctorDAO.changePassword(10000, "newpass"));
+         assertFalse(doctorDAO.changePassword(10000, "newpass"));
     }
 
     @Test
@@ -492,7 +492,7 @@ public class DoctorDAOTest {
         boolean updated = doctorDAO.editDoctorProfile(doc);
 
         // fault - shouldn't be able to edit a doctor that doesn't exist in doctorDAO
-        assertFalse(updated, "shouldn't be able to edit a doctor that doesn't exist in doctorDAO");
+         assertFalse(updated, "shouldn't be able to edit a doctor that doesn't exist in doctorDAO");
     }
 
     @Test

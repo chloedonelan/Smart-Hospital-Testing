@@ -1,58 +1,177 @@
 package com.hms.entity;
 
+import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
 
 public class UserTest {
 
+    private User user;
+
+    @BeforeEach
+    public void setUp() {
+        user = new User();
+    }
+
     @Test
-    public void testDefaultConstructor() {
-        User user = new User();
+    public void testDefaultId() {
+        assertEquals(0, user.getId(), "default id should be 0");
+    }
 
-        assertEquals(0, user.getId(), "Default id should be 0");
-        assertNull(user.getFullName(), "Default fullName should be null");
-        assertNull(user.getEmail(), "Default email should be null");
-        assertNull(user.getPassword(), "Default password should be null");
+    @Test
+    public void testDefaultFullName() {
+        assertNull(user.getFullName(), "default fullName should be null");
+    }
 
-        user.setId(1);
-        user.setFullName("default constructor user");
-        user.setEmail("default@gmail.com");
-        user.setPassword("defaultpass");
+    @Test
+    public void testDefaultEmail() {
+        assertNull(user.getEmail(), "default email should be null");
+    }
 
-        assertEquals(1, user.getId());
-        assertEquals("default constructor user", user.getFullName());
-        assertEquals("default@gmail.com", user.getEmail());
-        assertEquals("defaultpass", user.getPassword());
+    @Test
+    public void testDefaultPassword() {
+        assertNull(user.getPassword(), "default password should be null");
+    }
+
+    @Test
+    public void testSetAndGetIdPositive() {
+        user.setId(123);
+        assertEquals(123, user.getId());
+    }
+
+    @Test
+    public void testSetAndGetIdBounds() {
+        user.setId(Integer.MAX_VALUE);
+        assertEquals(Integer.MAX_VALUE, user.getId());
+        user.setId(Integer.MIN_VALUE);
+        assertEquals(Integer.MIN_VALUE, user.getId());
+    }
+
+    @Test
+    public void testSetAndGetFullNameNormal() {
+        user.setFullName("Alice Smith");
+        assertEquals("Alice Smith", user.getFullName());
+    }
+
+    @Test
+    public void testSetFullNameNull() {
+        user.setFullName("nullname");
+        user.setFullName(null);
+        assertNull(user.getFullName());
+    }
+
+    @Test
+    public void testSetFullNameEmpty() {
+        user.setFullName("");
+        assertEquals("", user.getFullName());
+    }
+
+    @Test
+    public void testSetFullNameSpecialChars() {
+        String special = "!specname";
+        user.setFullName(special);
+        assertEquals(special, user.getFullName());
+    }
+
+    @Test
+    public void testSetFullNameLong() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 500; i++) sb.append('u');
+        String longName = sb.toString();
+        user.setFullName(longName);
+        assertEquals(500, user.getFullName().length());
+    }
+
+    @Test
+    public void testSetAndGetEmailNormal() {
+        user.setEmail("user@gmail.com");
+        assertEquals("user@gmail.com", user.getEmail());
+    }
+
+    @Test
+    public void testSetEmailNull() {
+        user.setEmail("user@gmail.com");
+        user.setEmail(null);
+        assertNull(user.getEmail());
+    }
+
+    @Test
+    public void testSetEmailEmpty() {
+        user.setEmail("");
+        assertEquals("", user.getEmail());
+    }
+
+    @Test
+    public void testSetEmailLong() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("user@");
+        for (int i = 0; i < 200; i++) sb.append('e');
+        sb.append(".com");
+        String longEmail = sb.toString();
+        user.setEmail(longEmail);
+        assertTrue(user.getEmail().length() > 200);
+    }
+
+    @Test
+    public void testSetAndGetPasswordNormal() {
+        user.setPassword("normalpass");
+        assertEquals("normalpass", user.getPassword());
+    }
+
+    @Test
+    public void testSetPasswordNull() {
+        user.setPassword("nullpass");
+        user.setPassword(null);
+        assertNull(user.getPassword());
+    }
+
+    @Test
+    public void testSetPasswordEmpty() {
+        user.setPassword("");
+        assertEquals("", user.getPassword());
+    }
+
+    @Test
+    public void testSetPasswordLong() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 100; i++) sb.append('p');
+        String longPass = sb.toString();
+        user.setPassword(longPass);
+        assertEquals(100, user.getPassword().length());
     }
 
     @Test
     public void testParameterizedConstructorWithId() {
-        User user = new User(2, "parameter constructor with id user", "parameterwithid@gmail.com", "parameterwithidpass");
-
-        assertEquals(2, user.getId());
-        assertEquals("parameter constructor with id user", user.getFullName());
-        assertEquals("parameterwithid@gmail.com", user.getEmail());
-        assertEquals("parameterwithidpass", user.getPassword());
+        User u = new User(5, "Bob", "bob@gmail.com", "bobpw");
+        assertEquals(5, u.getId());
+        assertEquals("Bob", u.getFullName());
+        assertEquals("bob@gmail.com", u.getEmail());
+        assertEquals("bobpw", u.getPassword());
     }
 
     @Test
     public void testParameterizedConstructorWithoutId() {
-        User user = new User("parameter constructor without id user", "parameternoid@gmail.com", "parameternoidpass");
-
-        assertEquals(0, user.getId());
-        assertEquals("parameter constructor without id user", user.getFullName());
-        assertEquals("parameternoid@gmail.com", user.getEmail());
-        assertEquals("parameternoidpass", user.getPassword());
+        User u = new User("Carol", "carol@gmail.com", "carolpw");
+        assertEquals(0, u.getId(), "id should default to 0");
+        assertEquals("Carol", u.getFullName());
+        assertEquals("carol@gmail.com", u.getEmail());
+        assertEquals("carolpw", u.getPassword());
     }
 
     @Test
-    public void testToString() {
-        User user = new User(3, "to string user", "tostring@gmail.com", "tostringpass");
-        String toStr = user.toString();
+    public void testToStringContainsFields() {
+        User u = new User(9, "Dan", "dan@gmail.com", "danpw");
+        String s = u.toString();
+        assertTrue(s.contains("id=9"));
+        assertTrue(s.contains("fullName=Dan"));
+        assertTrue(s.contains("email=dan@gmail.com"));
+        assertTrue(s.contains("password=danpw"));
+    }
 
-        assertTrue(toStr.contains("id=3"), "toString should contain id=3");
-        assertTrue(toStr.contains("fullName=to string user"), "toString should contain fullName=to string user");
-        assertTrue(toStr.contains("email=tostring@gmail.com"), "toString should contain email=dave@example.com");
-        assertTrue(toStr.contains("password=tostringpass"), "toString should contain password=tostringpass");
+    @Test
+    public void testToStringEmptyFields() {
+        user = new User();
+        String s = user.toString();
+        assertTrue(s.contains("id=0"));
+        assertTrue(s.contains("fullName=null"));
     }
 }
