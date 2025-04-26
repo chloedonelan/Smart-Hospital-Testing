@@ -41,7 +41,7 @@ public class UpdateDoctorServletTest {
   public static void setupDB() throws Exception {
     conn = DriverManager.getConnection(
         "jdbc:mysql://localhost:3306/hospital_db",
-        "root", "rootuser"
+        "root", "root"
     );
   }
   

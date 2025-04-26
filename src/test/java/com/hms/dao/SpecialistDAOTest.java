@@ -18,8 +18,8 @@ public class SpecialistDAOTest {
     @BeforeAll
     public static void setupDB() throws Exception {
         conn = DriverManager.getConnection(
-                "jdbc:mysql://127.0.0.1:3306/hospital?allowMultiQueries=true",
-                "root", "abcd1234"
+                "jdbc:mysql://127.0.0.1:3306/hospital_db?allowMultiQueries=true",
+                "root", "root"
         );
 
         String sql = new String(Files.readAllBytes(Paths.get("src/test/resources/setup.sql")));
@@ -27,8 +27,8 @@ public class SpecialistDAOTest {
         stmt.execute(sql);
 
         conn = DriverManager.getConnection(
-                "jdbc:mysql://127.0.0.1:3306/hospital",
-                "root", "abcd1234"
+                "jdbc:mysql://127.0.0.1:3306/hospital_db",
+                "root", "root"
         );
     }
 

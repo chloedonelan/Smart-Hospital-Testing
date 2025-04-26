@@ -9,6 +9,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -25,8 +27,20 @@ public class DoctorTest {
   @BeforeAll
   public static void setupDB() throws Exception {
     conn = DriverManager.getConnection(
+        "jdbc:mysql://localhost:3306/hospital_db?allowMultiQueries=true",
+        "root", "root"
+    );
+  
+    String sql = new String(Files.readAllBytes(Paths.get("src/test/resources/DoctorTestSetup.sql")));
+  
+    // Execute setup
+    Statement stmt = conn.createStatement();
+    stmt.execute(sql);
+  
+    // Now switch connection to hospital_db
+    conn = DriverManager.getConnection(
         "jdbc:mysql://localhost:3306/hospital_db",
-        "root", "rootuser"
+        "root", "root"
     );
   }
   

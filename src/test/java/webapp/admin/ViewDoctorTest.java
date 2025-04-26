@@ -30,7 +30,7 @@ public class ViewDoctorTest {
   public static void setupDB() throws Exception {
     conn = DriverManager.getConnection(
         "jdbc:mysql://localhost:3306/hospital_db?allowMultiQueries=true",
-        "root", "rootuser"
+        "root", "root"
     );
   
     String sql = new String(Files.readAllBytes(Paths.get("src/test/resources/ViewDoctorTestSetup.sql")));
@@ -42,7 +42,7 @@ public class ViewDoctorTest {
     // Now switch connection to hospital_db
     conn = DriverManager.getConnection(
         "jdbc:mysql://localhost:3306/hospital_db",
-        "root", "rootuser"
+        "root", "root"
     );
   }
   

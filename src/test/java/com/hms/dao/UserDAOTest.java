@@ -19,7 +19,7 @@ public class UserDAOTest {
     public static void setupDB() throws Exception {
         conn = DriverManager.getConnection(
                 "jdbc:mysql://127.0.0.1:3306/hospital_db?allowMultiQueries=true",
-                "root", "rootuser"
+                "root", "root"
         );
 
         String sql = new String(Files.readAllBytes(Paths.get("src/test/resources/setup.sql")));
@@ -28,7 +28,7 @@ public class UserDAOTest {
 
         conn = DriverManager.getConnection(
                 "jdbc:mysql://127.0.0.1:3306/hospital_db",
-                "root", "rootuser"
+                "root", "root"
         );
     }
 

@@ -2,14 +2,16 @@ package com.hms.dao;
 
 import com.hms.entity.Doctor;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.params.*;
-import org.junit.jupiter.params.provider.*;
 
 // Note: this test class does not check for null parameters, as I don't have the original sql files which would contain the necessary constraints
 // e.g. name not null, phone number/email follow a specific format
@@ -25,7 +27,7 @@ public class DoctorDAOTest {
     public static void setupDB() throws Exception {
         conn = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/?allowMultiQueries=true",
-                "root", "rootuser"
+                "root", "root"
         );
 
         String sql = new String(Files.readAllBytes(Paths.get("src/test/resources/setup.sql")));
@@ -37,7 +39,7 @@ public class DoctorDAOTest {
         // Now switch connection to hospital_db
         conn = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/hospital_db",
-                "root", "rootuser"
+                "root", "root"
         );
     }
 

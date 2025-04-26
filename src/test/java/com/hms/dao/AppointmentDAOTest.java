@@ -28,7 +28,7 @@ public class AppointmentDAOTest {
     // Now switch connection to hospital_db
     conn = DriverManager.getConnection(
         "jdbc:mysql://localhost:3306/hospital_db",
-        "root", "rootuser"
+        "root", "root"
     );
   }
   
