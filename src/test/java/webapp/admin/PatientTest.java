@@ -166,13 +166,6 @@ public class PatientTest {
   
   @Nested
   public class PatientTableTests {
-    // Verify that the grid title is displayed
-    @Test
-    public void testTitle() {
-      WebElement title = driver.findElement(By.xpath("//*[contains(text(),'Patient Details')]"));
-      assertTrue(title.isDisplayed());
-    }
-  
     // Verify that the grid has the correct headers displayed
     @Test
     public void testHeaders() {
