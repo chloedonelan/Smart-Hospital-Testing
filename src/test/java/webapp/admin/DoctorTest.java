@@ -24,8 +24,9 @@ public class DoctorTest {
   private static Connection conn;
   WebDriver driver;
   WebDriverWait wait;
-  @BeforeAll
-  public static void setupDB() throws Exception {
+  
+  @BeforeEach
+  public void setup() throws Exception {
     conn = DriverManager.getConnection(
         "jdbc:mysql://localhost:3306/hospital_db?allowMultiQueries=true",
         "root", "rootuser"
@@ -42,26 +43,6 @@ public class DoctorTest {
         "jdbc:mysql://localhost:3306/hospital_db",
         "root", "rootuser"
     );
-  }
-  
-  @AfterEach
-  public void rollback() throws SQLException {
-    conn.rollback(); // undo db changes
-    Statement stmt = conn.createStatement();
-    stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
-  }
-  
-  @AfterAll
-  public static void cleanup() throws SQLException {
-    if (conn != null) conn.close();
-  }
-  
-  @BeforeEach
-  public void setup() throws SQLException {
-    conn.setAutoCommit(false);
-  
-    Statement stmt = conn.createStatement();
-    stmt.execute("SET FOREIGN_KEY_CHECKS=0");
     
     driver = new ChromeDriver();
     wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -76,6 +57,16 @@ public class DoctorTest {
     wait.until(ExpectedConditions.urlContains("admin/index.jsp"));
     
     driver.get("http://localhost:8080/Doctor_Patient_Portal_war/admin/doctor.jsp");
+  }
+  
+  @AfterEach
+  public void teardown() {
+    driver.quit();
+  }
+  
+  @AfterAll
+  public static void cleanup() throws SQLException {
+    if (conn != null) conn.close();
   }
   
   // Verify that page title is correct

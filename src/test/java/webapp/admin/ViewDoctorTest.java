@@ -1,9 +1,6 @@
 package webapp.admin;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -26,8 +23,9 @@ public class ViewDoctorTest {
   private static Connection conn;
   WebDriver driver;
   WebDriverWait wait;
-  @BeforeAll
-  public static void setupDB() throws Exception {
+  
+  @BeforeEach
+  public void setup() throws Exception {
     conn = DriverManager.getConnection(
         "jdbc:mysql://localhost:3306/hospital_db?allowMultiQueries=true",
         "root", "rootuser"
@@ -44,10 +42,7 @@ public class ViewDoctorTest {
         "jdbc:mysql://localhost:3306/hospital_db",
         "root", "rootuser"
     );
-  }
-  
-  @BeforeEach
-  public void setup() throws SQLException {
+    
     driver = new ChromeDriver();
     wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     
@@ -61,6 +56,16 @@ public class ViewDoctorTest {
     wait.until(ExpectedConditions.urlContains("admin/index.jsp"));
     
     driver.get("http://localhost:8080/Doctor_Patient_Portal_war/admin/view_doctor.jsp");
+  }
+  
+  @AfterEach
+  public void teardown() {
+    driver.quit();
+  }
+  
+  @AfterAll
+  public static void cleanup() throws SQLException {
+    if (conn != null) conn.close();
   }
   
   // Verify that page title is correct
