@@ -1,4 +1,4 @@
-package com.hms.web;
+package webapp;
 
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.AfterEach;
