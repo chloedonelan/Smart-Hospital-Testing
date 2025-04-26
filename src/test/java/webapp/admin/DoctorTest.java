@@ -40,7 +40,7 @@ public class DoctorTest {
     // Now switch connection to hospital_db
     conn = DriverManager.getConnection(
         "jdbc:mysql://localhost:3306/hospital_db",
-        "root", "root"
+        "root", "rootuser"
     );
   }
   
@@ -56,19 +56,12 @@ public class DoctorTest {
     if (conn != null) conn.close();
   }
   
-  
   @BeforeEach
   public void setup() throws SQLException {
     conn.setAutoCommit(false);
   
     Statement stmt = conn.createStatement();
     stmt.execute("SET FOREIGN_KEY_CHECKS=0");
-  
-    // reset auto-increment and clear data in tables
-    // stmt.execute("TRUNCATE TABLE appointment");
-    // stmt.execute("TRUNCATE TABLE user_details");
-    // stmt.execute("TRUNCATE TABLE specialist");
-    stmt.execute("TRUNCATE TABLE doctor");
     
     driver = new ChromeDriver();
     wait = new WebDriverWait(driver, Duration.ofSeconds(10));
