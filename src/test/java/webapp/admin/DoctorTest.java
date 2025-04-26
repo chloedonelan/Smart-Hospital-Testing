@@ -28,7 +28,7 @@ public class DoctorTest {
   public static void setupDB() throws Exception {
     conn = DriverManager.getConnection(
         "jdbc:mysql://localhost:3306/hospital_db?allowMultiQueries=true",
-        "root", "root"
+        "root", "rootuser"
     );
   
     String sql = new String(Files.readAllBytes(Paths.get("src/test/resources/DoctorTestSetup.sql")));

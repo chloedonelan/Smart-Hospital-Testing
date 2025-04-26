@@ -26,7 +26,7 @@ public class DoctorPagesSeleniumTest {
     static void setupDB() throws Exception {
         conn = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/?allowMultiQueries=true",
-                "root", "root"
+                "root", "rootuser"
         );
 
         String sql = new String(Files.readAllBytes(
@@ -39,7 +39,7 @@ public class DoctorPagesSeleniumTest {
 
         conn = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/hospital_db",
-                "root", "root"
+                "root", "rootuser"
         );
 
         String docInsert = "INSERT INTO doctor\n" +

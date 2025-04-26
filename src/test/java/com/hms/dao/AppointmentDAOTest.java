@@ -20,15 +20,9 @@ public class AppointmentDAOTest {
   
   @BeforeAll
   public static void setupDB() throws Exception {
-//    conn = DriverManager.getConnection(
-//        "jdbc:mysql://localhost:3306/?allowMultiQueries=true",
-//        "root", "rootuser"
-//    );
-    
-    // Now switch connection to hospital_db
     conn = DriverManager.getConnection(
-        "jdbc:mysql://localhost:3306/hospital_db",
-        "root", "root"
+        "jdbc:mysql://localhost:3306/?allowMultiQueries=true",
+        "root", "rootuser"
     );
   }
   
