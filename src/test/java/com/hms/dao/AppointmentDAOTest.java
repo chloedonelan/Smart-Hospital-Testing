@@ -21,7 +21,7 @@ public class AppointmentDAOTest {
   @BeforeAll
   public static void setupDB() throws Exception {
     conn = DriverManager.getConnection(
-        "jdbc:mysql://localhost:3306/?allowMultiQueries=true",
+        "jdbc:mysql://localhost:3306/hospital_db?allowMultiQueries=true",
         "root", "rootuser"
     );
   }
