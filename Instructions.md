@@ -1,27 +1,39 @@
-## Instructions to Run the Smart Hospital Project
+## Instructions to Run the Smart-Hospital Project and Associated Tests
 
-#### Set up Tomcat
-Download and install Apache Tomcat from their official website.
-
-
-#### Set up MySQL Database
-Download and install MySQL from their official website. Then, set up a new connection and remember the username and password you set up. From this point forward in the document, we will refer to the username as "root" and the password as "rootuser" as those are our own credentials. You should change all occurrences of these values depending on your own chosen credentials.
+#### What you need to work with this project:
+* IntelliJ
+* Apache Tomcat
+* MySQL Workbench 
 
 #### Update Maven Dependencies
-Go to the `pom.xml` file and download the necessary dependencies.
+* Open the project in IntelliJ.
+* Open the `pom.xml` file and download the necessary dependencies.
 
-#### Update Database Configuration
-In `src/main/java/com/hms/db/DbConnection.java`, modify the following line:
-`conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/hospital_db","root","rootuser");`
-- Link can most likely kept the same.
-- "root" and "rootuser" are your own MySQL connection's username and password. Set them up accordingly.
+#### Set up MySQL Database
+* Download MySQL Workbench from the following website: https://www.mysql.com/products/workbench/
+* Follow the installation wizard to get it set up on your device.
+* Note: you should set your username to 'root' and password to 'rootuser' (these are the credentials that we used to run the app and associated tests).
+* Open MySQL workbench and click the "+" button. This should open a menu titled "Setup New Connection".
+* Create a connection named "root". It should have the hostname "127.0.0.1", use port "3306", and username "root" and password "rootuser" should be valid credentials for it.
+* Open your new connection named "root". 
+* Click "File", then "Open SQL Script", and then open the "db-script.sql" file.
+* Run all the commands in the file. You can do this by clicking "Ctrl-Enter" on each line.
+* If at any point the server is shutdown, you can restart it by clicking on "Startup / Shutdown" under the "Instance" tab on the "Navigator" menu. 
 
-Similarly, in all other DAO and Admin Servlet test files (`src/main/java/com/hms/dao/*DAOTest.java`, `src/main/java/com/hms/admin/servlet/*.java`), update the connection string to match your MySQL credentials.
-- These include AppointmentDAOTest, DoctorDAOTest, PatientDAOTest, UserDAOTest; all files in `admin/servlet/*`.
+#### Set up Tomcat
+* Download Apache Tomcat from the following website: https://tomcat.apache.org/download-11.cgi
+* Follow Apache's instructions (https://tomcat.apache.org/tomcat-11.0-doc/setup.html) to set it up on your device.
+* To set up the server in the project in IntelliJ, follow these instructions: https://www.jetbrains.com/guide/java/tutorials/working-with-apache-tomcat/using-existing-application/.
+* To run the server, go to the "Services" menu (at the bottom by the Git, Run, Terminal, etc. menus).
+* Select your Tomcat server and click the "Run" button.
+* You should see a new tab open in your browser. It should have the following link: http://localhost:8080/Doctor_Patient_Portal_war/.
 
-#### Run the Project
-1. Non-frontend files can be run in IntelliJ as normal. The web tests all require you to start a Tomcat server first (a localhost link should pop up and you should be able to interact with the application), then you can run the tests.
+#### Running Tests
+* Note: for any backend test files, only the database needs to be running (not the Tomcat server). For any frontend test files, both need to be running.
+* Backend tests are located in the following directory: 'src/main/test/java/com/hms'.
+* Frontend tests are located in the following directory: 'src/main/test/java/webapp'.
+* You can run all the tests in any individual test class by opening the file and clicking on the "Run test" button next to the class declaration in the left sidebar.
+* You can run any individual test in any individual test class by opening the file and clicking on the "Run test" button next to the test method declaration in the left sidebar.
 
-
-
-## Debugging / Troubleshooting
+#### Generating Code Coverage Reports with JaCoCo
+* 
