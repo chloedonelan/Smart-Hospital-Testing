@@ -36,4 +36,6 @@
 * You can run any individual test in any individual test class by opening the file and clicking on the "Run test" button next to the test method declaration in the left sidebar.
 
 #### Generating Code Coverage Reports with JaCoCo
-* 
+
+#### Other notes
+* When working with the frontend, the admin login email is "admin@gmail.com" and the password is "admin".
