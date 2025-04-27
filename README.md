@@ -1,3 +1,7 @@
+# This is the original (forked) project's README
+
+## For instructions on how to setup this project, run tests, etc., please look at Instructions.md
+
 # Smart-Hospital : Advance Java Web Project
 1) Smart-Hospital is an Advance Java Web application.
 2) Doctor-Patient-Portal is a landing page with separate login's for admin, doctor, and patients.
