@@ -95,6 +95,8 @@
 					<includes>
 						<include>**/com/hms/entity/**/*Test.java</include>
 						<include>**/com/hms/admin/servlet/**/*Test.java</include>
+						<include>**/com/hms/doctor/servlet/**/*Test.java</include>
+						<include>**/com/hms/user/servlet/**/*Test.java</include>
 					</includes>
 				</configuration>
 			</plugin>
@@ -116,17 +118,6 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.2.5</version>
-				<configuration>
-					<argLine>-Dnet.bytebuddy.experimental=true</argLine>
-					<includes>
-						<include>**/*Test.java</include>
-					</includes>
-				</configuration>
 			</plugin>
 		</plugins>
 		<finalName>Doctor-Patient-Portal</finalName>
