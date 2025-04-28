@@ -1,7 +1,6 @@
 C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\webapp\admin\ViewDoctorTest.java
 C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\com\hms\admin\servlet\UpdateDoctorServletTest.java
 C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\webapp\admin\PatientTest.java
-C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\webapp\ChangePasswordTest.java
 C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\com\hms\admin\servlet\SpecialistServletTest.java
 C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\com\hms\doctor\servlet\DoctorChangePasswordTest.java
 C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\com\hms\user\servlet\UserRegisterServletTest.java
@@ -10,12 +9,11 @@ C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospit
 C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\com\hms\admin\servlet\AdminLoginServletTest.java
 C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\com\hms\doctor\servlet\UpdateStatusTest.java
 C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\webapp\admin\IndexTest.java
+C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\webapp\GeneralFormPagesSeleniumTest.java
 C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\com\hms\doctor\servlet\DoctorLoginServletTest.java
 C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\webapp\admin\EditDoctorTest.java
 C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\webapp\doctor\DoctorPagesSeleniumTest.java
-C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\webapp\AdminLoginTest.java
 C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\com\hms\admin\servlet\DoctorServletTest.java
-C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\webapp\IndexTest.java
 C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\com\hms\doctor\servlet\DoctorEditProfileServletTest.java
 C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\com\hms\dao\AppointmentDAOTest.java
 C:\Users\chloe\Documents\Spring_2025\Software_Testing_and_Debugging\Smart-Hospital-Testing\src\test\java\com\hms\dao\UserDAOTest.java
