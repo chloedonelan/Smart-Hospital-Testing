@@ -26,6 +26,7 @@
 * Download Apache Tomcat from the following website: https://tomcat.apache.org/download-11.cgi
 * Follow Apache's instructions (https://tomcat.apache.org/tomcat-11.0-doc/setup.html) to set it up on your device.
 * To set up the server in the project in IntelliJ, follow these instructions: https://www.jetbrains.com/guide/java/tutorials/working-with-apache-tomcat/using-existing-application/.
+  * Note: select the regular .war file, NOT the exploded .war file
 * To run the server, go to the "Services" menu (at the bottom by the Git, Run, Terminal, etc. menus).
 * Select your Tomcat server and click the "Run" button.
 * You should see a new tab open in your browser. It should have the following link: http://localhost:8080/Doctor_Patient_Portal_war/.
@@ -56,3 +57,4 @@
 * When working with the frontend, the admin login email is "admin@gmail.com" and the password is "admin".
 * If the 'mvn' command isn't working on your device, it may not be setup correctly and you may need to use the entire path to it
   * For example, it might be something like this: '/c/ProgramData/chocolatey/lib/maven/apache-maven-3.9.9/bin/mvn.cmd'
+* If you are working off of a different version of Java and some of the dependency versions are not compatible with it, you may need to adjust those versions accordingly. We suggest using the same version as the one listed above.
