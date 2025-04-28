@@ -3,124 +3,148 @@ package com.hms.doctor.servlet;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.*;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
+import java.io.IOException;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import org.junit.jupiter.api.Test;
-import java.util.*;
-import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
+import org.mockito.MockedConstruction;
+
 import com.hms.dao.DoctorDAO;
 import com.hms.entity.Doctor;
 
 public class DoctorLoginServletTest {
-    private DoctorDAO mockedDoctorDAO;
-
-    @BeforeEach
-    public void setup() throws Exception {
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        HttpServletResponse response = mock(HttpServletResponse.class);
-        HttpSession session = mock(HttpSession.class);
-        when(request.getSession()).thenReturn(session);
-        mockedDoctorDAO = mock(DoctorDAO.class);
-        DoctorLoginServletTest servlet = new DoctorLoginServletTest() {
-            final DoctorDAO doctorDAOOverride = mockedDoctorDAO;
-        };
-    }
-
-
+    
     @Test
-    public void testDoPostSuccessfulLogin() throws ServletException, IOException {
+    public void testDoPost_ValidCredentials() throws ServletException, IOException {
         // Arrange
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         HttpSession session = mock(HttpSession.class);
-
+        
+        String email = "doctor@example.com";
+        String password = "password123";
+        
+        Doctor mockDoctor = new Doctor();
+        mockDoctor.setId(1);
+        mockDoctor.setFullName("Dr. Smith");
+        mockDoctor.setEmail(email);
+        
+        when(request.getSession()).thenReturn(session);
+        when(request.getParameter("email")).thenReturn(email);
+        when(request.getParameter("password")).thenReturn(password);
+        
+        try (MockedConstruction<DoctorDAO> daoMocks = mockConstruction(DoctorDAO.class, (mockDao, ctx) -> {
+            when(mockDao.loginDoctor(email, password)).thenReturn(mockDoctor);
+        })) {
+            // Act
+            DoctorLoginServlet servlet = new DoctorLoginServlet();
+            servlet.doPost(request, response);
+            
+            // Assert
+            verify(session).setAttribute("doctorObj", mockDoctor);
+            verify(response).sendRedirect("doctor/index.jsp");
+            verify(session, never()).setAttribute(eq("errorMsg"), anyString());
+        }
+    }
+    
+    @Test
+    public void testDoPost_InvalidCredentials() throws ServletException, IOException {
+        // Arrange
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        HttpSession session = mock(HttpSession.class);
+        
+        String email = "invalid@example.com";
+        String password = "wrongpassword";
+        
+        when(request.getSession()).thenReturn(session);
+        when(request.getParameter("email")).thenReturn(email);
+        when(request.getParameter("password")).thenReturn(password);
+        
+        try (MockedConstruction<DoctorDAO> daoMocks = mockConstruction(DoctorDAO.class, (mockDao, ctx) -> {
+            when(mockDao.loginDoctor(email, password)).thenReturn(null);
+        })) {
+            // Act
+            DoctorLoginServlet servlet = new DoctorLoginServlet();
+            servlet.doPost(request, response);
+            
+            // Assert
+            verify(session).setAttribute("errorMsg", "Invalid email or password");
+            verify(response).sendRedirect("doctor_login.jsp");
+            verify(session, never()).setAttribute(eq("doctorObj"), any());
+        }
+    }
+    
+    @Test
+    public void testDoPost_NullEmail() throws ServletException, IOException {
+        // Arrange
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        HttpSession session = mock(HttpSession.class);
+        
+        when(request.getSession()).thenReturn(session);
+        when(request.getParameter("email")).thenReturn(null);
+        when(request.getParameter("password")).thenReturn("password123");
+        
+        try (MockedConstruction<DoctorDAO> daoMocks = mockConstruction(DoctorDAO.class, (mockDao, ctx) -> {
+            when(mockDao.loginDoctor(null, "password123")).thenReturn(null);
+        })) {
+            // Act
+            DoctorLoginServlet servlet = new DoctorLoginServlet();
+            servlet.doPost(request, response);
+            
+            // Assert
+            verify(session).setAttribute("errorMsg", "Invalid email or password");
+            verify(response).sendRedirect("doctor_login.jsp");
+        }
+    }
+    
+    @Test
+    public void testDoPost_NullPassword() throws ServletException, IOException {
+        // Arrange
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        HttpSession session = mock(HttpSession.class);
+        
+        when(request.getSession()).thenReturn(session);
+        when(request.getParameter("email")).thenReturn("doctor@example.com");
+        when(request.getParameter("password")).thenReturn(null);
+        
+        try (MockedConstruction<DoctorDAO> daoMocks = mockConstruction(DoctorDAO.class, (mockDao, ctx) -> {
+            when(mockDao.loginDoctor("doctor@example.com", null)).thenReturn(null);
+        })) {
+            // Act
+            DoctorLoginServlet servlet = new DoctorLoginServlet();
+            servlet.doPost(request, response);
+            
+            // Assert
+            verify(session).setAttribute("errorMsg", "Invalid email or password");
+            verify(response).sendRedirect("doctor_login.jsp");
+        }
+    }
+    
+    @Test
+    public void testDoPost_ExceptionHandling() throws ServletException, IOException {
+        // Arrange
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        HttpSession session = mock(HttpSession.class);
+        
+        when(request.getSession()).thenReturn(session);
         when(request.getParameter("email")).thenReturn("doctor@example.com");
         when(request.getParameter("password")).thenReturn("password123");
-        when(request.getSession()).thenReturn(session);
-
-        Doctor doctor = new Doctor();
-        doctor.setId(1);
-        doctor.setFullName("Dr. Smith");
-        doctor.setEmail("doctor@example.com");
-
-        DoctorDAO mockedDoctorDAO = mock(DoctorDAO.class);
-        when(mockedDoctorDAO.loginDoctor("doctor@example.com", "password123")).thenReturn(doctor);
-
-        DoctorLoginServlet servlet = new DoctorLoginServlet() {
-            final DoctorDAO doctorDAOOverride = mockedDoctorDAO;
-
-            @Override
-            protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                String email = req.getParameter("email");
-                String password = req.getParameter("password");
-
-                HttpSession session = req.getSession();
-
-                Doctor doctor = doctorDAOOverride.loginDoctor(email, password);
-
-                if (doctor != null) {
-                    session.setAttribute("doctorObj", doctor);
-                    resp.sendRedirect("doctor/index.jsp");
-                } else {
-                    session.setAttribute("errorMsg", "Invalid email or password");
-                    resp.sendRedirect("doctor_login.jsp");
-                }
-            }
-        };
-
-        // Act
-        servlet.doPost(request, response);
-
-        // Assert
-        verify(session).setAttribute("doctorObj", doctor);
-        verify(response).sendRedirect("doctor/index.jsp");
-        verify(session, never()).setAttribute(eq("errorMsg"), anyString());
-    }
-
-    @Test
-    public void testDoPostFailedLogin() throws ServletException, IOException {
-        // Arrange
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        HttpServletResponse response = mock(HttpServletResponse.class);
-        HttpSession session = mock(HttpSession.class);
-
-        when(request.getParameter("email")).thenReturn("doctor@example.com");
-        when(request.getParameter("password")).thenReturn("wrongpassword");
-        when(request.getSession()).thenReturn(session);
-
-        DoctorDAO mockedDoctorDAO = mock(DoctorDAO.class);
-        when(mockedDoctorDAO.loginDoctor("doctor@example.com", "wrongpassword")).thenReturn(null);
-
-        DoctorLoginServlet servlet = new DoctorLoginServlet() {
-            final DoctorDAO doctorDAOOverride = mockedDoctorDAO;
-
-            @Override
-            protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                String email = req.getParameter("email");
-                String password = req.getParameter("password");
-
-                HttpSession session = req.getSession();
-
-                Doctor doctor = doctorDAOOverride.loginDoctor(email, password);
-
-                if (doctor != null) {
-                    session.setAttribute("doctorObj", doctor);
-                    resp.sendRedirect("doctor/index.jsp");
-                } else {
-                    session.setAttribute("errorMsg", "Invalid email or password");
-                    resp.sendRedirect("doctor_login.jsp");
-                }
-            }
-        };
-
-        // Act
-        servlet.doPost(request, response);
-
-        // Assert
-        verify(session).setAttribute("errorMsg", "Invalid email or password");
-        verify(response).sendRedirect("doctor_login.jsp");
-        verify(session, never()).setAttribute(eq("doctorObj"), any());
+        
+        try (MockedConstruction<DoctorDAO> daoMocks = mockConstruction(DoctorDAO.class, (mockDao, ctx) -> {
+            when(mockDao.loginDoctor(anyString(), anyString())).thenThrow(new RuntimeException("Database error"));
+        })) {
+            // Act & Assert
+            DoctorLoginServlet servlet = new DoctorLoginServlet();
+            assertThrows(RuntimeException.class, () -> {
+                servlet.doPost(request, response);
+            });
+        }
     }
 }

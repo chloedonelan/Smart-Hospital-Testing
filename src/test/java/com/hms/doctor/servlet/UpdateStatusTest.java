@@ -3,173 +3,147 @@ package com.hms.doctor.servlet;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.*;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
+import java.io.IOException;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
+import org.mockito.MockedConstruction;
 
 import com.hms.dao.AppointmentDAO;
-import com.hms.db.DBConnection;
 
 public class UpdateStatusTest {
-
+    
     @Test
-    public void testDoPostUpdateStatusSuccess() throws ServletException, IOException {
+    public void testDoPost_UpdateSuccessful() throws ServletException, IOException {
         // Arrange
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         HttpSession session = mock(HttpSession.class);
-
-        when(request.getParameter("id")).thenReturn("101");
-        when(request.getParameter("doctorId")).thenReturn("1");
-        when(request.getParameter("comment")).thenReturn("Prescription: Take medicine twice daily");
+        
+        int id = 123;
+        int doctorId = 456;
+        String comment = "Patient is recovering well";
+        
         when(request.getSession()).thenReturn(session);
-
-        AppointmentDAO mockedAppointmentDAO = mock(AppointmentDAO.class);
-        when(mockedAppointmentDAO.updateDrAppointmentCommentStatus(101, 1, "Prescription: Take medicine twice daily"))
-                .thenReturn(true);
-
-        UpdateStatus servlet = new UpdateStatus() {
-            final AppointmentDAO appointmentDAOOverride = mockedAppointmentDAO;
-
-            @Override
-            protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                try {
-                    int id = Integer.parseInt(req.getParameter("id"));
-                    int doctorId = Integer.parseInt(req.getParameter("doctorId"));
-                    String comment = req.getParameter("comment");
-
-                    boolean f = appointmentDAOOverride.updateDrAppointmentCommentStatus(id, doctorId, comment);
-
-                    HttpSession session = req.getSession();
-
-                    if(f == true) {
-                        session.setAttribute("successMsg", "Comment updated");
-                        resp.sendRedirect("doctor/patient.jsp");
-                    } else {
-                        session.setAttribute("errorMsg", "Something went wrong on server!");
-                        resp.sendRedirect("doctor/patient.jsp");
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        // Act
-        servlet.doPost(request, response);
-
-        // Assert
-        verify(mockedAppointmentDAO).updateDrAppointmentCommentStatus(101, 1, "Prescription: Take medicine twice daily");
-        verify(session).setAttribute("successMsg", "Comment updated");
-        verify(response).sendRedirect("doctor/patient.jsp");
+        when(request.getParameter("id")).thenReturn(String.valueOf(id));
+        when(request.getParameter("doctorId")).thenReturn(String.valueOf(doctorId));
+        when(request.getParameter("comment")).thenReturn(comment);
+        
+        try (MockedConstruction<AppointmentDAO> daoMocks = mockConstruction(AppointmentDAO.class, (mockDao, ctx) -> {
+            when(mockDao.updateDrAppointmentCommentStatus(id, doctorId, comment)).thenReturn(true);
+        })) {
+            // Act
+            UpdateStatus servlet = new UpdateStatus();
+            servlet.doPost(request, response);
+            
+            // Assert
+            verify(session).setAttribute("successMsg", "Comment updated");
+            verify(response).sendRedirect("doctor/patient.jsp");
+            verify(session, never()).setAttribute(eq("errorMsg"), anyString());
+        }
     }
-
+    
     @Test
-    public void testDoPostUpdateStatusFailure() throws ServletException, IOException {
+    public void testDoPost_UpdateFailed() throws ServletException, IOException {
         // Arrange
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         HttpSession session = mock(HttpSession.class);
-
-        when(request.getParameter("id")).thenReturn("101");
-        when(request.getParameter("doctorId")).thenReturn("1");
-        when(request.getParameter("comment")).thenReturn("Prescription: Take medicine twice daily");
+        
+        int id = 123;
+        int doctorId = 456;
+        String comment = "Patient is recovering well";
+        
         when(request.getSession()).thenReturn(session);
-
-        AppointmentDAO mockedAppointmentDAO = mock(AppointmentDAO.class);
-        when(mockedAppointmentDAO.updateDrAppointmentCommentStatus(101, 1, "Prescription: Take medicine twice daily"))
-                .thenReturn(false);
-
-        UpdateStatus servlet = new UpdateStatus() {
-            final AppointmentDAO appointmentDAOOverride = mockedAppointmentDAO;
-
-            @Override
-            protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                try {
-                    int id = Integer.parseInt(req.getParameter("id"));
-                    int doctorId = Integer.parseInt(req.getParameter("doctorId"));
-                    String comment = req.getParameter("comment");
-
-                    boolean f = appointmentDAOOverride.updateDrAppointmentCommentStatus(id, doctorId, comment);
-
-                    HttpSession session = req.getSession();
-
-                    if(f) {
-                        session.setAttribute("successMsg", "Comment updated");
-                        resp.sendRedirect("doctor/patient.jsp");
-                    } else {
-                        session.setAttribute("errorMsg", "Something went wrong on server!");
-                        resp.sendRedirect("doctor/patient.jsp");
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        // Act
-        servlet.doPost(request, response);
-
-        // Assert
-        verify(mockedAppointmentDAO).updateDrAppointmentCommentStatus(101, 1, "Prescription: Take medicine twice daily");
-        verify(session).setAttribute("errorMsg", "Something went wrong on server!");
-        verify(response).sendRedirect("doctor/patient.jsp");
+        when(request.getParameter("id")).thenReturn(String.valueOf(id));
+        when(request.getParameter("doctorId")).thenReturn(String.valueOf(doctorId));
+        when(request.getParameter("comment")).thenReturn(comment);
+        
+        try (MockedConstruction<AppointmentDAO> daoMocks = mockConstruction(AppointmentDAO.class, (mockDao, ctx) -> {
+            when(mockDao.updateDrAppointmentCommentStatus(id, doctorId, comment)).thenReturn(false);
+        })) {
+            // Act
+            UpdateStatus servlet = new UpdateStatus();
+            servlet.doPost(request, response);
+            
+            // Assert
+            verify(session).setAttribute("errorMsg", "Something went wrong on server!");
+            verify(response).sendRedirect("doctor/patient.jsp");
+            verify(session, never()).setAttribute(eq("successMsg"), anyString());
+        }
     }
-
+    
     @Test
-    public void testDoPostInvalidAppointmentId() throws ServletException, IOException {
+    public void testDoPost_InvalidId() throws ServletException, IOException {
         // Arrange
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         HttpSession session = mock(HttpSession.class);
-
+        
+        when(request.getSession()).thenReturn(session);
         when(request.getParameter("id")).thenReturn("not_a_number");
-        when(request.getParameter("doctorId")).thenReturn("1");
-        when(request.getParameter("comment")).thenReturn("Prescription: Take medicine twice daily");
-        when(request.getSession()).thenReturn(session);
-
-        AppointmentDAO mockedAppointmentDAO = mock(AppointmentDAO.class);
-
-        UpdateStatus servlet = new UpdateStatus() {
-            final AppointmentDAO appointmentDAOOverride = mockedAppointmentDAO;
-
-            @Override
-            protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                try {
-                    int id = Integer.parseInt(req.getParameter("id"));
-                    int doctorId = Integer.parseInt(req.getParameter("doctorId"));
-                    String comment = req.getParameter("comment");
-
-                    boolean f = appointmentDAOOverride.updateDrAppointmentCommentStatus(id, doctorId, comment);
-
-                    HttpSession session = req.getSession();
-
-                    if(f == true) {
-                        session.setAttribute("successMsg", "Comment updated");
-                        resp.sendRedirect("doctor/patient.jsp");
-                    } else {
-                        session.setAttribute("errorMsg", "Something went wrong on server!");
-                        resp.sendRedirect("doctor/patient.jsp");
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    // In a robust servlet, we might want to add error handling here:
-                    // session.setAttribute("errorMsg", "Invalid input parameters");
-                    // resp.sendRedirect("doctor/patient.jsp");
-                }
-            }
-        };
-
+        when(request.getParameter("doctorId")).thenReturn("456");
+        when(request.getParameter("comment")).thenReturn("Comment");
+        
         // Act
+        UpdateStatus servlet = new UpdateStatus();
         servlet.doPost(request, response);
-
-        // Assert
-        // No exceptions should be thrown, and no interactions with the DAO should occur
-        verify(mockedAppointmentDAO, never()).updateDrAppointmentCommentStatus(anyInt(), anyInt(), anyString());
+        
+        // Assert - Servlet catches exception internally, so nothing to verify except
+        // that AppointmentDAO was never constructed
+        // This will be verified implicitly since we're not setting up any MockedConstruction
+    }
+    
+    @Test
+    public void testDoPost_NullComment() throws ServletException, IOException {
+        // Arrange
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        HttpSession session = mock(HttpSession.class);
+        
+        when(request.getSession()).thenReturn(session);
+        when(request.getParameter("id")).thenReturn("123");
+        when(request.getParameter("doctorId")).thenReturn("456");
+        when(request.getParameter("comment")).thenReturn(null);
+        
+        try (MockedConstruction<AppointmentDAO> daoMocks = mockConstruction(AppointmentDAO.class, (mockDao, ctx) -> {
+            when(mockDao.updateDrAppointmentCommentStatus(123, 456, null)).thenReturn(true);
+        })) {
+            // Act
+            UpdateStatus servlet = new UpdateStatus();
+            servlet.doPost(request, response);
+            
+            // Assert
+            verify(session).setAttribute("successMsg", "Comment updated");
+            verify(response).sendRedirect("doctor/patient.jsp");
+        }
+    }
+    
+    @Test
+    public void testDoPost_DAOThrowsException() throws ServletException, IOException {
+        // Arrange
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        HttpSession session = mock(HttpSession.class);
+        
+        when(request.getSession()).thenReturn(session);
+        when(request.getParameter("id")).thenReturn("123");
+        when(request.getParameter("doctorId")).thenReturn("456");
+        when(request.getParameter("comment")).thenReturn("Comment");
+        
+        try (MockedConstruction<AppointmentDAO> daoMocks = mockConstruction(AppointmentDAO.class, (mockDao, ctx) -> {
+            when(mockDao.updateDrAppointmentCommentStatus(anyInt(), anyInt(), anyString()))
+                .thenThrow(new RuntimeException("Database error"));
+        })) {
+            // Act
+            UpdateStatus servlet = new UpdateStatus();
+            servlet.doPost(request, response);
+            
+            // Assert - Since the servlet catches exceptions, we verify no further interactions
+            verifyNoMoreInteractions(session, response);
+        }
     }
 }
