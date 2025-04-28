@@ -58,3 +58,7 @@
 * If the 'mvn' command isn't working on your device, it may not be setup correctly and you may need to use the entire path to it
   * For example, it might be something like this: '/c/ProgramData/chocolatey/lib/maven/apache-maven-3.9.9/bin/mvn.cmd'
 * If you are working off of a different version of Java and some of the dependency versions are not compatible with it, you may need to adjust those versions accordingly. We suggest using the same version as the one listed above.
+* If any frontend tests fail, try the following:
+  * Stop and restart the server
+  * Rerun the test classes (sometimes they fail because of weird bugs with Chrome)
+  * Rerun the individual tests that fail
