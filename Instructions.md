@@ -54,4 +54,4 @@
 #### Other notes
 * When working with the frontend, the admin login email is "admin@gmail.com" and the password is "admin".
 * If the 'mvn' command isn't working on your device, it may not be setup correctly and you may need to use the entire path to it
-  * For example, this is the one on my device: '/c/ProgramData/chocolatey/lib/maven/apache-maven-3.9.9/bin/mvn.cmd'
+  * For example, it might be something like this: '/c/ProgramData/chocolatey/lib/maven/apache-maven-3.9.9/bin/mvn.cmd'
