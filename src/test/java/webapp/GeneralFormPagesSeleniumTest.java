@@ -18,8 +18,8 @@ public class GeneralFormPagesSeleniumTest {
   private static int userId;
   private static int appointmentId;
   
-  @BeforeAll
-  static void setupDB() throws Exception {
+  @BeforeEach
+  public void setupDB() throws Exception {
     conn = DriverManager.getConnection(
         "jdbc:mysql://localhost:3306/hospital_db?allowMultiQueries=true",
         "root", "rootuser"
@@ -95,10 +95,7 @@ public class GeneralFormPagesSeleniumTest {
         appointmentId = rs.getInt(1);
       }
     }
-  }
-  
-  @BeforeEach
-  void setup() {
+
     driver = new ChromeDriver();
     driver.manage().window().maximize();
     driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
