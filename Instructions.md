@@ -2,6 +2,7 @@
 
 #### What you need to work with this project:
 * Maven
+* JDK 17
 * IntelliJ
 * Apache Tomcat
 * MySQL Workbench 
