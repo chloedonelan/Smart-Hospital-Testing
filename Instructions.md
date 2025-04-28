@@ -16,7 +16,7 @@
 * Open MySQL workbench and click the "+" button. This should open a menu titled "Setup New Connection".
 * Create a connection named "root". It should have the hostname "127.0.0.1", use port "3306", and username "root" and password "rootuser" should be valid credentials for it.
 * Open your new connection named "root". 
-* Click "File", then "Open SQL Script", and then open the "db-script.sql" file.
+* Click "File", then "Open SQL Script", and then open the "db-script.sql" file (in the "resources" directory).
 * Run all the commands in the file. You can do this by clicking "Ctrl-Enter" on each line.
 * If at any point the server is shutdown, you can restart it by clicking on "Startup / Shutdown" under the "Instance" tab on the "Navigator" menu. 
 
