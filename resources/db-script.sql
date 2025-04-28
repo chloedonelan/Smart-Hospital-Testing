@@ -1,3 +1,6 @@
+CREATE DATABASE hospital_db;
+USE hospital_db;
+
 -- Create the user_details table
 CREATE TABLE user_details (
                               id INT AUTO_INCREMENT PRIMARY KEY,
